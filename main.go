@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 	"go-data/stack"
+	"reflect"
 )
 
-func main() {
+func learnStatck() {
 	s := stack.New()
 	s.Push(2)
 	s.Push(3)
@@ -24,4 +25,17 @@ func main() {
 	c = append(c, d[4:]...)
 	fmt.Println("d=", d)
 	fmt.Println("c=", c)
+}
+
+func main() {
+	var a *[]interface{} = &[]interface{}{}
+	fmt.Println(a)
+	*a = append(*a, 2)
+	fmt.Println(a)
+
+	b := make([]interface{}, 0)
+	c := &b
+	fmt.Println(reflect.TypeOf(c))
+	*c = append(*c, 4)
+	fmt.Println(c)
 }
