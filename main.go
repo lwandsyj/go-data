@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"go-data/stack"
-	"go-data/util"
+	"strconv"
 )
 
 func learnStatck() {
@@ -27,9 +27,31 @@ func learnStatck() {
 	fmt.Println("c=", c)
 }
 
+func isPalindrome(x int) bool {
+	s := strconv.Itoa(x)
+	arr := []rune(s)
+	l := len(arr)
+	for i := 0; i < l/2; i++ {
+		if arr[i] != arr[l-1-i] {
+			return false
+		}
+	}
+	return true
+}
+
+func transpose(matrix [][]int) [][]int {
+	l := len(matrix)
+	var max int
+	for i := 0; i < l; i++ {
+		count := len(matrix[i])
+		if max < count {
+			max = count
+		}
+	}
+	return nil
+}
+
 func main() {
-	s := "abcde"
-	d := util.Reverse(s)
-	fmt.Println(s)
-	fmt.Println(d)
+	var result [][]int
+	fmt.Println(result)
 }
