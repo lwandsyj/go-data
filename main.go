@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"go-data/stack"
+	"go-data/util"
 )
 
 func learnStatck() {
@@ -27,8 +28,8 @@ func learnStatck() {
 }
 
 func main() {
-	c := "hello"
-	a := []rune(c)
-	d := string(a)
-	fmt.Println(d) // hello
+	s := "abcde"
+	d := util.Reverse(s)
+	fmt.Println(s)
+	fmt.Println(d)
 }
