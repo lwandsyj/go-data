@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"go-data/stack"
-	"reflect"
 )
 
 func learnStatck() {
@@ -28,14 +27,8 @@ func learnStatck() {
 }
 
 func main() {
-	var a *[]interface{} = &[]interface{}{}
-	fmt.Println(a)
-	*a = append(*a, 2)
-	fmt.Println(a)
-
-	b := make([]interface{}, 0)
-	c := &b
-	fmt.Println(reflect.TypeOf(c))
-	*c = append(*c, 4)
-	fmt.Println(c)
+	c := "hello"
+	a := []rune(c)
+	d := string(a)
+	fmt.Println(d) // hello
 }
