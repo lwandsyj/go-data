@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"go-data/sort"
 	"go-data/stack"
 	"strconv"
 )
@@ -39,19 +40,8 @@ func isPalindrome(x int) bool {
 	return true
 }
 
-func transpose(matrix [][]int) [][]int {
-	l := len(matrix)
-	var max int
-	for i := 0; i < l; i++ {
-		count := len(matrix[i])
-		if max < count {
-			max = count
-		}
-	}
-	return nil
-}
-
 func main() {
-	var result [][]int
-	fmt.Println(result)
+	arr := []int{3, 4, 5, 2, 1}
+	arr = sort.SelectSort(arr)
+	fmt.Println(arr)
 }
