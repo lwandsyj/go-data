@@ -1,5 +1,7 @@
 package sort
 
+import "fmt"
+
 //BubbleSort 冒泡排序
 func BubbleSort(arr []int) []int {
 	l := len(arr)
@@ -60,4 +62,48 @@ func InsertSort(arr []int) []int {
 		}
 	}
 	return arr
+}
+
+//QuickSort 快速排序
+func QuickSort(arr []int) {
+	recursionSort(arr, 0, len(arr)-1)
+}
+
+// l:left,r:right
+func recursionSort(arr []int, l, r int) {
+	if l < r {
+		index := getIndex(arr, l, r)
+		fmt.Println(arr)
+		// 左边部分
+		recursionSort(arr, l, index)
+		// 右边部分
+		recursionSort(arr, index+1, r)
+	}
+}
+
+//getIndex 获取基准值位置
+func getIndex(arr []int, l, r int) int {
+	base := arr[l] // 基准值
+	for l < r {
+		// 先从右边开始找到小于基准值的数据
+		for l < r && arr[r] > base {
+			r--
+		}
+		// 小于基准值的移到左边
+		if l < r {
+			arr[l] = arr[r]
+			l++
+		}
+		// 然后从左边开始找到大于基准值的数据
+		for l < r && arr[l] < base {
+			l++
+		}
+		// 大于基准值的移到右边
+		if l < r {
+			arr[r] = arr[l]
+			r--
+		}
+		arr[l] = base
+	}
+	return l
 }
