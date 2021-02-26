@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"go-data/sort"
 	"go-data/stack"
 	"strconv"
+	"strings"
 )
 
 func learnStatck() {
@@ -40,8 +40,29 @@ func isPalindrome(x int) bool {
 	return true
 }
 
+func sort(arr []string) []string {
+	l := len(arr)
+	for i := 0; i < l; i++ {
+		for j := 0; j < l-i-1; j++ {
+			if arr[j]+arr[j+1] > arr[j+1]+arr[j] {
+				arr[j], arr[j+1] = arr[j+1], arr[j]
+			}
+		}
+	}
+	return arr
+}
+
+func convert(arr []int) []string {
+	rtn := make([]string, 0)
+	for _, value := range arr {
+		rtn = append(rtn, strconv.Itoa(value))
+	}
+	return rtn
+}
 func main() {
-	arr := []int{72, 6, 57, 88, 60, 42, 83, 73, 48, 85}
-	sort.QuickSort(arr)
-	fmt.Println(arr)
+	a := []int{3, 30, 34, 5, 9}
+	b := convert(a)
+	fmt.Println(len(b))
+	b = sort(b)
+	fmt.Println(strings.Join(b, ""))
 }

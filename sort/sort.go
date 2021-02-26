@@ -107,3 +107,10 @@ func getIndex(arr []int, l, r int) int {
 	}
 	return l
 }
+
+//Test 测试
+func Test() {
+	arr := []int{72, 6, 57, 88, 60, 42, 83, 73, 48, 85}
+	QuickSort(arr)
+	fmt.Println(arr)
+}
