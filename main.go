@@ -42,6 +42,6 @@ func isPalindrome(x int) bool {
 
 func main() {
 	arr := []int{3, 4, 5, 2, 1}
-	arr = sort.SelectSort(arr)
+	arr = sort.InsertSort(arr)
 	fmt.Println(arr)
 }

@@ -36,3 +36,28 @@ func SelectSort(arr []int) []int {
 	}
 	return arr
 }
+
+//InsertSort 插入排序
+func InsertSort(arr []int) []int {
+	l := len(arr)
+	// 开始默认把第一个元素当做已排序好的元素,从第一个开始和已排序好的元素依次比较
+	for i := 1; i < l; i++ {
+		// 提取元素
+		j := i
+		// 和排序号的元素依次比较
+		for j > 0 {
+			//如果元素小于当前元素，则向前移动
+			if arr[j] < arr[j-1] {
+				// 交换两个元素的值
+				arr[j], arr[j-1] = arr[j-1], arr[j]
+				// 判断一次往前走一个位置，依次判断
+				j--
+			} else {
+				// 如果大于当前元素则退出当前循环，继续外层循环
+				break
+			}
+
+		}
+	}
+	return arr
+}
