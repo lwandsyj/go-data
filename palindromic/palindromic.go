@@ -14,6 +14,7 @@ func ValidPalindromic(s string) bool {
 	return false
 }
 
+// 反转字符串是否和原来的字符一样
 func isPalindrome(x int) bool {
 	s := strconv.Itoa(x)
 	arr := []rune(s)
@@ -26,4 +27,18 @@ func isPalindrome(x int) bool {
 		end--
 	}
 	return s == string(arr)
+}
+
+// 二分查找算法，比较第一个和最后一个是否相等，依次类推
+func isPalindromeBy(x int) bool {
+	s := strconv.Itoa(x)
+	arr := []rune(s)
+	l := len(arr)
+	for i := 0; i <= l/2; i++ {
+		// 逐个判断，直到
+		if arr[i] != arr[l-1-i] {
+			return false
+		}
+	}
+	return true
 }
