@@ -1,89 +1,89 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"log"
+	"mime/multipart"
+	"net/http"
+	"os"
 )
 
-func f1(x int) {
-}
-
-func f3() int {
-	return 0
-}
-func f4(x int) int {
-	return x
-}
-func f5() (x int, y string) {
-	x = 0
-	y = "hello"
-	return
-}
-func f() {
-	fmt.Println("f test")
-}
-func f2(x int, y string) {
-	fmt.Println("x=", x, "y=", y)
-}
-
-// 函数作为参数
-// fn 参数是有两个参数，没有返回值的函数类型
-func test(fn func() (int, string)) {
-	x, y := fn() // 有多个返回值的
-	fmt.Println("x=", x, "y=", y)
-}
-
-//函数类型声明可以带有参数名称，也可以不带参数名称
-func test1(fn func() (x int, y string)) {
-	m, n := fn() // 有返回值的
-	fmt.Println("m=", m, "n=", n)
-}
-func test2(x, y int) func(int) int {
-	// 返回函数，类型声明和返回类型保持一致
-	return func(z int) int {
-		// 函数的返回值
-		return x + y + z
+func get() {
+	// get 请求，返回一个response 对象
+	res, error := http.Get("http://www.baidu.com")
+	if error != nil {
+		fmt.Println(res)
+		return
 	}
-}
-
-func index(s, p string) int {
-	ls := len([]rune(s))
-	lp := len([]rune(p))
-	for i := 0; i+lp <= ls; i++ {
-		tmp := string(s[i : i+lp])
-		fmt.Println(tmp)
-		if tmp == p {
-			return i
-		}
+	// 输出response 响应状态，200 ok
+	fmt.Println(res.Status)
+	// 输出response 响应状态 200
+	fmt.Println(res.StatusCode)
+	// ioutil.ReadAll 读取io.Reader 类型，返回[]byte 切片
+	n, error := ioutil.ReadAll(res.Body)
+	if error != nil {
+		fmt.Println("body read", error)
+		return
 	}
-	return -1
+	// 转成字符串
+	fmt.Println("n=", string(n))
 }
+func postFileAndReturnResponse(filename string) string {
+	// 实例化一个Buffer 结构体，buffer 实现了io.Reader 和 io.Writer
+	fileDataBuffer := bytes.Buffer{}
+	//multipart实现了MIME的multipart解析,Writer类型用于生成multipart信息。
+	//cannot use fileDataBuffer (variable of type bytes.Buffer) as io.Writer
+	// value in argument to multipart.NewWriter: missing method Write (Write has pointer receiver)
+	multipart := multipart.NewWriter(&fileDataBuffer)
+	// 返回file 信息
+	file, err := os.Open(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// CreateFormFile是CreatePart方法的包装， 使用给出的属性名和文件名创建一个新的form-data头。
+	formFile, err := multipart.CreateFormFile("myFile", file.Name())
+	if err != nil {
+		log.Fatal(err)
+	}
+	// 将reader 中的数据拷贝到writer 中
+	_, err = io.Copy(formFile, file)
+	multipart.Close()
+	// 创建post 文件请求
+	req, err := http.NewRequest("POST",
+		"http://localhost:8080", &fileDataBuffer)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// 设置http 请求header ,文件上传为multipart/form-data
+	req.Header.Set("Content-Type",
+		//方法返回w对应的HTTP multipart请求的Content-Type的值，多以multipart/form-data起
+		multipart.FormDataContentType())
+	// response body为io.Reader 类型
+	response, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer response.Body.Close()
+	// ioutil.ReadAll body为io.Reader 类型
+	data, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return string(data)
 
-type people struct {
-	name string
-	age  int
 }
-
-// 使用people 是值类型传递，传递的是副本
-// 变量修改的是副本的值，与原始数据无关
-func (p people) setName(name string) {
-	p.name = name
-}
-
-// 使用people 指针类型传递，传递的内存地址引用
-// 变量修改的值会影响原始数据
-func (p *people) setName1(name string) {
-	p.name = name
-}
-
 func main() {
-	p := people{
-		name: "张三",
+	// 文件内容路径
+	path := "./test/hello1.txt"
+	// WriteFile 如果文件存在，则会清空文件的内容，然后写入新的内容
+	// 如果文件不存在，则按照file.Mode(0666) 创建文件，并写入内容
+	err := ioutil.WriteFile(path, []byte("中难过"), 0666)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	p.setName("李四")
-	fmt.Println(p)
-
-	c := &p
-	c.setName1("李四")
-	fmt.Println(c)
 }

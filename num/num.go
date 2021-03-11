@@ -1,7 +1,24 @@
 package num
 
+import (
+	"fmt"
+	"path"
+	"runtime"
+)
+
 //SumNum 计算给定数字各个位数的总和
 func SumNum(num int) int {
+	//
+	//dir, _ := os.Getwd()
+	_, file, line, ok := runtime.Caller(0)
+	base := path.Base(file)
+	fmt.Println(path.Dir(file))
+	fmt.Println(base)
+	dir, filename := path.Split(file)
+	fmt.Println(dir, filename)
+	ext := path.Ext(file)
+	fmt.Println(ext)
+	fmt.Println(file, line, ok)
 	var sum int
 	// 如果num >0 则一次取个位值
 	for num > 0 {
